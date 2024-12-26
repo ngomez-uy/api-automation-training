@@ -50,11 +50,11 @@ Before starting each milestone, create a feature branch with the name of the mil
    - Follow the [TypeScript Basics Course](https://learning.oreilly.com/course/ultimate-typescript-course/9781837027019/) to learn key concepts.
 2. Practice writing TypeScript code as part of the course exercises.
 3. Create a folder named `typescript-course` in your repository.
-4. Add the practice code from the course to the `typescript-course` folder.
+4. Add the practice code from the course and the completion badge to the `typescript-course` folder.
 
 **Deliverable**:
 
-- Create a PR with the `typescript-course` folder containing your practice code.
+- Create a PR with the `typescript-course` folder containing your practice code and completion badge.
 - Include a brief summary in the PR description highlighting the topics you covered and any challenges you faced.
 
 ---
@@ -211,6 +211,24 @@ Note: Since this is a mock API, there are some scenarios that will not work, suc
 **Deliverable**:
 
 - Create separate PRs for each suite across both services.
+
+---
+
+### **Milestone 11: Authentication**
+
+**Objective**: Implement the authenticate method.
+
+1. Go to the ServiceBase class and find the example `authenticate` method
+2. Read the method and the [documentation](https://github.com/damianpereira86/api-automation-training/tree/main/framework#authentication) to understand what it does. 
+3. Modify the authenticate method implementation
+   1. Add the USER and PASSWORD environment variables to the .env file
+   2. Modify line 46 to call the `GET /user/login` endpoint. Note that this endpoint is a GET, and expects two params instead of a payload as in the example.
+   3. Set the obtained Session ID correctly according the API documentation. Check the [Delete Pet](https://petstore.swagger.io/#/pet/deletePet) request for information on how to set the session ID.
+   4. Modify the Delete Pet test to call the authenticate method from a before hook.
+
+**Deliverable**:
+
+- Create a PR with the new authenticate method and the modified Delete.
 
 ---
 
