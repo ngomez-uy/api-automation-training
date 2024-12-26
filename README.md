@@ -75,7 +75,7 @@ The training is designed for participants to fork this repository, develop their
     ```
     
 5. Explore the framework:
-    - Read the [API Automation Framework (TS+Mocha)](#api-automation-framework-tsmocha) Readme.
+    - Read the [API Automation Framework (TS+Mocha)](https://github.com/damianpereira86/api-automation-training/tree/main/framework#readme) Readme.
     - Understand the `ServiceBase` class and its usage in service models.
 
 **Deliverable**:
