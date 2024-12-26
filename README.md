@@ -2,6 +2,8 @@
 
 Welcome to the **API Automation Training**! This repository serves as the foundation for the training, providing a base API Automation Framework and step-by-step guidance for participants to build their API automation skills.
 
+Find the the API Framework documentation [here](framework/README.md).
+
 The training is designed for participants to fork this repository, develop their tests for a mock API, and create Pull Requests (PRs) for feedback and review. Mentors will review PRs regularly, providing feedback and guidance to ensure learning and progress.
 
 ---
@@ -25,23 +27,30 @@ The training is designed for participants to fork this repository, develop their
 
 ---
 
+## Workflow and Guidelines
+
+1. **Fork the Repository**: Fork this repo to your GitHub account and create a local clone.
+2. **Add collaborators**: Add your mentors as colalborators to the repo.
+3. **Branching**: Use feature branches (e.g., `feature/milestone-1`) for your changes.
+4. **Pull Requests**: Create PRs for each milestone. Include a description of your changes and any challenges faced. Add your mentor as a reviewer.
+5. **Code Reviews**: Mentors will review your PRs on demand, providing feedback.
+6. **Feedback**: Address feedback promptly and resubmit your PR.
+
+---
+
 ## Training Milestones
+
+Before starting each milestone, create a feature branch with the name of the milestone, e.g.: `feature/milestone-1`
 
 ### **Milestone 1: Learn the Basics of TypeScript**
 
 **Objective**: Gain a foundational understanding of TypeScript to support API automation.
 
-1. Fork and clone this repository.
-2. Create a branch for this milestone
-   
-3. Complete an online TypeScript course:
+1. Complete an online TypeScript course:
    - Follow the [TypeScript Basics Course](https://learning.oreilly.com/course/ultimate-typescript-course/9781837027019/) to learn key concepts.
-     
-4. Practice writing TypeScript code as part of the course exercises.
-
-5. Create a folder named `typescript-course` in your forked repository.
-
-6. Add the practice code from the course to the `typescript-course` folder.
+2. Practice writing TypeScript code as part of the course exercises.
+3. Create a folder named `typescript-course` in your repository.
+4. Add the practice code from the course to the `typescript-course` folder.
 
 **Deliverable**:
 
@@ -54,27 +63,21 @@ The training is designed for participants to fork this repository, develop their
 
 **Objective**: Set up the framework and understand its structure.
 
-1. Create a branch for this milestone
-   
-2. Move to the framework folder
+1. Move to the framework folder
    ```bash
     cd framework
     ```
-   
-3. Install dependencies and set up your environment:
+2. Install dependencies and set up your environment:
     
     ```bash
     npm install
     cp example.env .env
     ```
-    
-4. Update .env with the test API base URL:
-    
+3. Update .env with the test API base URL:
     ```yaml
     BASEURL=https://petstore.swagger.io/v2
     ```
-    
-5. Explore the framework:
+4. Explore the framework:
     - Read the [API Automation Framework (TS+Mocha)](https://github.com/damianpereira86/api-automation-training/tree/main/framework#readme) Readme.
     - Understand the `ServiceBase` class and its usage in service models.
 
@@ -88,15 +91,14 @@ The training is designed for participants to fork this repository, develop their
 
 **Objective**: Create service models for the **Store** service.
 
-1. Create a branch for this milestone
-2. Create a new `StoreService` extending `ServiceBase`.
-3. Implement methods for the following operations:
+1. Create a new `StoreService` extending `ServiceBase`.
+2. Implement methods for the following operations:
     - `GET /store/inventory`
     - `POST /store/order`
     - `GET /store/order/{orderId}`
     - `DELETE /store/order/{orderId}`
-4. Add request and response models where appropriate.
-5. Write the **first test** for the following scenario:
+3. Add request and response models where appropriate.
+4. Write the **first test** for the following main scenario:
    - Create an order and validate the response (`POST /store/order`).
 
 **Deliverable**:
@@ -105,15 +107,28 @@ The training is designed for participants to fork this repository, develop their
 
 ---
 
-### **Milestone 4: Basic Test Automation**
+### **Milestone 4: CI/CD Pipeline**
 
-**Objective**: Write tests for the rest of the Store service.
+**Objective**: Configure and understand the GitHub Action to run tests on each PR and merge to `main`.
 
-1. Write tests for the following scenarios:
-    - Verify inventory is returned (`GET /store/inventory`).
-    - Retrieve an order by ID and validate the data (`GET /store/order/{orderId}`).
-    - Delete an order and verify the status code (`DELETE /store/order/{orderId}`).
-2. Use tags like `@Smoke` or `@Regression` for test categorization.
+1. Explore the `.github/workflows/main.yml` file to understand the workflow triggers and steps.
+2. If you are not familiar with GitHub Actions, do some research to understand the basics, such as workflows, jobs, and steps. Refer to the [GitHub Actions Documentation](https://docs.github.com/en/actions).
+3. Configure the `BASEURL` variable in **Settings** > **Secrets and variables** > **Actions** > **Variables** with: `https://petstore.swagger.io/v2`
+
+**Deliverable**:
+
+- Create a PR with a summary of what you learned and confirm that the workflow ran successfully in the Actions tab.
+
+---
+
+### **Milestone 5: Complete the Create Order Suite**
+
+**Objective**: Write tests for the rest of the Create Store test Suite.
+
+1. Write additional tests for the Create Store (`POST /store/order`) endpoint.
+2. Include positive and negative tests.
+3. Use tags like `@Smoke` or `@Regression` for test categorization. `@Smoke` tests should be the ones that are absolutely required to pass.
+4. In case a test fails due to a bug in the API, make sure to create the bug in the Issues tab and follow the [Bug Management documentation](https://github.com/damianpereira86/api-automation-training/tree/main/framework#bug-management).
 
 **Deliverable**:
 
@@ -121,51 +136,88 @@ The training is designed for participants to fork this repository, develop their
 
 ---
 
-### **Milestone 5: Performance and Negative Testing**
+### **Milestone 6: Verify the order was created**
 
-**Objective**: Expand the test suite with performance and negative test cases.
+**Objective**: Make request to the get order endpointto verify the order was actually created.
 
-1. Add performance checks for key endpoints (e.g., response time < 1000ms).
-2. Write negative tests:
-    - Attempt to retrieve a non-existent order (`GET /store/order/{invalidId}`).
-    - Create an order with invalid data (`POST /store/order`).
+In case you didn't already noticed, the Create Order endpoint does not actually create an order (all the data is mocked). For this reason, if you only asserted against the response, your positive tests should have passed. This is why is so important to verify the resources were actually created.
+
+1. For the positive tests from Milestone 5, after the response assertions, obtain the created order ID from the response
+2. Make a request to the `GET /store/order/{orderId}` endpoint with the order ID
+3. Verify the response of the Get Order endpoint is 200, hence, the order was created successfully.
+4. Since the test should fail, follow step 4 in MIlestone 5 for handling it.
 
 **Deliverable**:
 
-- Create a PR with the new tests and details on the edge cases covered.
+- Create a PR with the tests and a brief summary of the changes.
 
 ---
 
-### **Milestone 6: Extend to Other Services**
+### **Milestone 7: Create Test Suites for the rest of the Store Service**
+
+**Objective**: Write tests for the rest of the Store service following the pracices covered above.
+
+1. Write a tests suite for each of the remaining endpoints in the Store Service:
+    - `GET /store/inventory`
+    - `GET /store/order/{orderId}`
+    - `DELETE /store/order/{orderId}`
+
+**Deliverable**:
+
+- **For each test suite**, create a PR with the tests and a brief summary of the scenarios covered.
+
+---
+
+### **Milestone 8: Pre and Post conditions: Hooks**
+
+**Objective**: Write hooks for pre and post conditions.
+
+Note: Since this is a mock API, there are some scenarios that will not work, such as creating an order to use it in the Get Order tests. 
+
+1. Write a [before hook](https://mochajs.org/#hooks) in the Get Order test suite.
+   1. Add a Before hook that reates an order by calling the right method in the StoreService model.
+   3. Obtain and store the order ID (the variable for this must be declared above the before hook).
+   4. Use the saved Order ID in the Get Order test. Note that this step will make the test fail as axplained above.
+2. Write an after each hook in the Create Order test suite. This is very useful for cleaning up data after a test execution.
+   1. Declare an orderId variable on top of the test suite
+   2. After every positive test, update the orderId variable with the newly created Order ID.
+   3. Add an AfterEach hook that deletes the created orders by calling the right method in the StoreService model. 
+
+**Deliverable**:
+
+- Create a PR with the changes and a brief summary. 
+- Since the Before hook will make the Get Order tests fail, you can comment this method before creating the PR, or setting the fake Order IDs (1-10) after making the Create Order request.
+
+---
+
+### **Milestone 9: Verify endpoints basic Performance**
+
+**Objective**: Expand the test suite with basic performance test cases.
+
+1. Add performance checks for the endpoints (e.g., response time < 1000ms).
+
+**Deliverable**:
+
+- Create a PR with the new tests and details covered.
+
+---
+
+### **Milestone 10: Extend to Other Services**
 
 **Objective**: Implement automation for additional services (`Pet` and `User`).
 
-1. Create service models for **Pet** and **User** services.
-2. Implement key operations and tests:
-    - For **Pet**: Add and retrieve pets.
-    - For **User**: Create and authenticate users.
+1. Repeat the previous steps for **Pet** and **User** services.
 
 **Deliverable**:
 
-- Create separate PRs for the service models and their respective tests.
-
-
----
-
-## Workflow and Guidelines
-
-1. **Fork the Repository**: Fork this repo to your GitHub account and create a local clone.
-2. **Branching**: Use feature branches (e.g., `feature/store-service`) for your changes.
-3. **Pull Requests**: Create PRs for each milestone. Include a description of your changes and any challenges faced.
-4. **Code Reviews**: Mentors will review your PRs weekly or bi-weekly, providing feedback.
-5. **Feedback**: Address feedback promptly and resubmit your PR.
+- Create separate PRs for each suite across both services.
 
 ---
 
 ## Schedule and Communication
 
 - **Weekly Reviews**: Mentors will provide feedback and approval for completed milestones.
-- **Support Channels**: Use the designated Slack/Teams/Discord channel for queries and discussions.
+- **Support Channels**: Chat with your mentors for queries and discussions.
 
 ---
 
@@ -176,5 +228,3 @@ The training is designed for participants to fork this repository, develop their
 3. **Learn from Feedback**: Incorporate mentor feedback to refine your implementation.
 
 ---
-
-Find the API Framework documentation below.  
