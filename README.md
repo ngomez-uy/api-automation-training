@@ -96,7 +96,7 @@ The training is designed for participants to fork this repository, develop their
     - `GET /store/order/{orderId}`
     - `DELETE /store/order/{orderId}`
 4. Add request and response models where appropriate.
-5. Write the first test for the following scenario:
+5. Write the **first test** for the following scenario:
    - Create an order and validate the response (`POST /store/order`).
 
 **Deliverable**:
