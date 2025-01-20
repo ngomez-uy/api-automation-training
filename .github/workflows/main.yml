@@ -1,4 +1,4 @@
-name: CI
+name: New CI Milestone 4
 
 # Run this workflow on Pull Requests and pushes to the main branch
 on:
