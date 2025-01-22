@@ -1,29 +1,43 @@
-name: CI
+name: New CI Milestone 4
 
+# Run this workflow on Pull Requests and pushes to the main branch
 on:
+  workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
-
+    branches:
+      - '**' 
 env:
   BASEURL: ${{ vars.BASEURL }}
   USER: ${{ secrets.USER }}
   PASSWORD: ${{ secrets.PASSWORD }}
 
 jobs:
-  build:
+  testjob1:
+    name: Run Tests
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./framework
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Test
-        uses: actions/setup-node@v1
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
-      - run: npm install
-      - run: npm run lint
-      - run: npm run test
+          node-version: '18.x' 
+          
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test
+
+
