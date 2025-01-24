@@ -7,8 +7,8 @@ export enum OrderStatus {
 
 export interface OrderModel {
     id: number | undefined;
-    petId: number | undefined;
-    quantity: number | string | undefined; // This should be a number, but we are testing for invalid data
+    petId: number | string | undefined;
+    quantity: number | string | undefined;
     shipDate: string | undefined;
     status: OrderStatus | undefined;
     complete: boolean | undefined;

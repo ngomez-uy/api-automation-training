@@ -1,5 +1,4 @@
 import * as chai from "chai";
-//import * as sinon from "sinon";
 import { OrderModel, OrderStatus } from "../models/request/OrderModel.js";
 import { StoreService } from "../models/services/StoreService.js";
 import { OrderResponse } from "../models/responses/OrderResponse.js";
@@ -8,7 +7,7 @@ chai.should();
 
 describe("Positive and Negative scenarios for POST /store/order", () => {
   const storeService = new StoreService();
-
+  
   function validateResponseFieldsOrderCreation(response: OrderResponse, 
     orderSent: OrderModel, 
     formattedShipDate: string
@@ -36,8 +35,12 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     const formattedShipDate = response.data.shipDate.toString().split('T')[0];
     if (!formattedShipDate) throw new Error("Ship Date is not defined");
     const orderResponse: OrderResponse = response.data;
+    console.log(response.data);
     response.status.should.equal(200, JSON.stringify(response.data));
     validateResponseFieldsOrderCreation(orderResponse,order,formattedShipDate);
+    
+    
+
   });
 
   it("@Smoke - Place Order correctly with valid values and Status = Delivered", async () => {
@@ -58,8 +61,7 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     validateResponseFieldsOrderCreation(orderResponse,order,formattedShipDate);
   });
 
-  // Additional positive valid scenarios
-  it("Place Order correctly with valid values and Status = Approved", async () => {
+  it("@Smoke - Place Order correctly with valid values and Status = Approved", async () => {
     const order: OrderModel = {
       id: 3,
       petId: 4,
@@ -77,7 +79,7 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     validateResponseFieldsOrderCreation(orderResponse, order, formattedShipDate);
   });
 
-  it("should place order with complete = false", async () => {
+  it("@Smoke - should place order with complete = false", async () => {
     const order: OrderModel = {
       id: 4,
       petId: 5,
@@ -95,7 +97,7 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     validateResponseFieldsOrderCreation(orderResponse, order, formattedShipDate);
   });
 
-  it("should place order with future ship date", async () => {
+  it("@Smoke - should place order with future ship date", async () => {
     const order: OrderModel = {
       id: 5,
       petId: 6,
@@ -113,7 +115,7 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     validateResponseFieldsOrderCreation(orderResponse, order, formattedShipDate);
   });
 
-  it("should place order with past ship date", async () => {
+  it("@Smoke - should place order with past ship date", async () => {
     const order: OrderModel = {
       id: 5,
       petId: 6,
@@ -161,24 +163,17 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     response.status.should.equal(500, JSON.stringify(response.data));
   });
 
-  /*it("@Regression - should return 404 for non-existent petId", async () => {
-    let mockedService = sinon.stub();
-    const order: OrderModel = {
+  it("@Regression - should return 404  for invalid petID", async () => {
+    const invalidOrder: OrderModel = {
       id: 2,
-      petId: 9999, 
-      quantity: 1,
+      petId: 9999,
+      quantity: 2, 
       shipDate: "2025-01-15",
       status: OrderStatus.Placed,
       complete: true,
     };
-    mockedService = sinon.stub(storeService, 'placeOrder').throws({ response: { status: 404 } });
 
-    try {
-      await storeService.placeOrder<OrderResponse>(order);
-    } catch (error: any) {
-      error.response.status.should.equal(404);
-    } finally {
-      mockedService.restore();
-    }
-  });*/
+    const response = await storeService.placeOrder<OrderResponse>(invalidOrder);
+    response.status.should.equal(404, JSON.stringify(response.data));
+  });
 });
