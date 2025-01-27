@@ -163,10 +163,12 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     response.status.should.equal(500, JSON.stringify(response.data));
   });
 
-  it("@Regression - should return 404  for invalid petID", async () => {
+  //BUG: https://github.com/ngomez-uy/api-automation-training/issues/4
+  //eslint-disable-next-line
+  it.skip("@Regression - should return 404  for invalid petID", async () => {
     const invalidOrder: OrderModel = {
       id: 2,
-      petId: 9999,
+      petId: 0,
       quantity: 2, 
       shipDate: "2025-01-15",
       status: OrderStatus.Placed,

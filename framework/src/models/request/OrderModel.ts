@@ -7,7 +7,7 @@ export enum OrderStatus {
 
 export interface OrderModel {
     id: number | undefined;
-    petId: number | string | undefined;
+    petId: number | undefined;
     quantity: number | string | undefined;
     shipDate: string | undefined;
     status: OrderStatus | undefined;
