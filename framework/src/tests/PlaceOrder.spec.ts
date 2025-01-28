@@ -38,9 +38,6 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     console.log(response.data);
     response.status.should.equal(200, JSON.stringify(response.data));
     validateResponseFieldsOrderCreation(orderResponse,order,formattedShipDate);
-    
-    
-
   });
 
   it("@Smoke - Place Order correctly with valid values and Status = Delivered", async () => {
