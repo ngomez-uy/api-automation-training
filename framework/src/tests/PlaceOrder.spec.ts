@@ -8,6 +8,15 @@ chai.should();
 describe("Positive and Negative scenarios for POST /store/order", () => {
   const storeService = new StoreService();
   
+  async function getStatusCodeFromGet(responseCreation: OrderResponse): Promise<number> {
+
+    let returnCode : undefined | number = undefined;
+    const responseId = await storeService.getOrderById<OrderResponse>(responseCreation.id);
+    returnCode = responseId.status;
+    
+    return returnCode; 
+  }
+  
   function validateResponseFieldsOrderCreation(response: OrderResponse, 
     orderSent: OrderModel, 
     formattedShipDate: string
@@ -35,9 +44,10 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     const formattedShipDate = response.data.shipDate.toString().split('T')[0];
     if (!formattedShipDate) throw new Error("Ship Date is not defined");
     const orderResponse: OrderResponse = response.data;
-    console.log(response.data);
     response.status.should.equal(200, JSON.stringify(response.data));
     validateResponseFieldsOrderCreation(orderResponse,order,formattedShipDate);
+    const statusCode = await getStatusCodeFromGet(response.data);
+    response.status.should.equal(200, statusCode.toString());
   });
 
   it("@Smoke - Place Order correctly with valid values and Status = Delivered", async () => {
@@ -56,6 +66,8 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     const orderResponse: OrderResponse = response.data;
     response.status.should.equal(200, JSON.stringify(response.data));
     validateResponseFieldsOrderCreation(orderResponse,order,formattedShipDate);
+    const statusCode = await getStatusCodeFromGet(response.data);
+    response.status.should.equal(200, statusCode.toString());
   });
 
   it("@Smoke - Place Order correctly with valid values and Status = Approved", async () => {
@@ -74,6 +86,8 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     const orderResponse: OrderResponse = response.data;
     response.status.should.equal(200, JSON.stringify(response.data));
     validateResponseFieldsOrderCreation(orderResponse, order, formattedShipDate);
+    const statusCode = await getStatusCodeFromGet(response.data);
+    response.status.should.equal(200, statusCode.toString());
   });
 
   it("@Smoke - should place order with complete = false", async () => {
@@ -92,6 +106,8 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     const orderResponse: OrderResponse = response.data;
     response.status.should.equal(200, JSON.stringify(response.data));
     validateResponseFieldsOrderCreation(orderResponse, order, formattedShipDate);
+    const statusCode = await getStatusCodeFromGet(response.data);
+    response.status.should.equal(200, statusCode.toString());
   });
 
   it("@Smoke - should place order with future ship date", async () => {
@@ -110,6 +126,8 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     const orderResponse: OrderResponse = response.data;
     response.status.should.equal(200, JSON.stringify(response.data));
     validateResponseFieldsOrderCreation(orderResponse, order, formattedShipDate);
+    const statusCode = await getStatusCodeFromGet(response.data);
+    response.status.should.equal(200, statusCode.toString());
   });
 
   it("@Smoke - should place order with past ship date", async () => {
@@ -128,6 +146,8 @@ describe("Positive and Negative scenarios for POST /store/order", () => {
     const orderResponse: OrderResponse = response.data;
     response.status.should.equal(200, JSON.stringify(response.data));
     validateResponseFieldsOrderCreation(orderResponse, order, formattedShipDate);
+    const statusCode = await getStatusCodeFromGet(response.data);
+    response.status.should.equal(200, statusCode.toString());
   });
 
   
